@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+"""Compares two files."""
 import argparse
 import json
 
@@ -7,50 +7,81 @@ def main():
     inputs = parse_args()
     diff_result = generate_diff(
         inputs.first_file,
-        inputs.second_file
+        inputs.second_file,
     )
     print(diff_result)
 
+
 def parse_args():
+    """Return the files to compare.
+
+    Create command-line options (-h (--help), -f (--format))
+    and arguments (first_file, second_file).
+
+    Returns:
+        Namespace with files to compare and their format.
+    """
     parser = argparse.ArgumentParser(
         prog='gendiff',
-        description='Compares two configuration files and shows a difference.')
+        description='Compares two configuration files and shows a difference.',
+    )
     parser.add_argument('first_file')
     parser.add_argument('second_file')
-    parser.add_argument('-f', '--format',
-                        help='set format of output')
-    args = parser.parse_args()
-    return args
+    parser.add_argument(
+        '-f',
+        '--format',
+        help='set format of output',
+    )
+    return parser.parse_args()
 
 
-def _fill(name, size, sep=' '):
-    return name.rjust(size-1, sep).ljust(size, sep)
+def _fill(name: str, size: int, filler: str = ' ') -> str:
+    """Convert string into string of the needed length.
+
+    Args:
+        name: A string to convert.
+        size: The result length of the string.
+        (if size <= len(name) nothing will change)
+        filler: A filler (default ' ').
+
+    Returns:
+        The string filled by filler to the length equal to size.
+    """
+    return name.rjust(size - 1, filler).ljust(size, filler)
 
 
-def generate_diff(import_file_1, import_file_2):
-    file_1_dict = json.load(open(import_file_1))
-    file_2_dict = json.load(open(import_file_2))
+def generate_diff(import_file1: str, import_file2: str) -> str:
+    """Compare two json-files and return the result of comparison.
+
+    Args:
+        import_file1: The first file to compare.
+        import_file2: The second file to compare.
+
+    Returns:
+        The result of comparison.
+    """
+    with open(import_file1) as file1:
+        file1_dict = json.load(file1)
+    with open(import_file2) as file2:
+        file2_dict = json.load(file2)
     diff_result_list = []
-    for k, v in file_1_dict.items():
-        if k in file_2_dict:
-            v_2 = file_2_dict.pop(k)
-            if v == v_2:
-                diff_result_list.append((k, v, ''))
+    for key, value1 in file1_dict.items():
+        if key in file2_dict:
+            poped_value2 = file2_dict.pop(key)
+            if value1 == poped_value2:
+                diff_result_list.append((key, value1, ''))
             else:
-                diff_result_list.append((k, v, '-'))
-                diff_result_list.append((k, v_2, '+'))
+                diff_result_list.append((key, value1, '-'))
+                diff_result_list.append((key, poped_value2, '+'))
         else:
-            diff_result_list.append((k, v, '-'))
-    for k, v in file_2_dict.items():
-        diff_result_list.append((k, v, '+'))
-    diff_result = '{\n' + '\n'.join(
-        map(
-            lambda tupl: f'{_fill(tupl[2], size=4)}{tupl[0]}: {tupl[1]}',
-            sorted(diff_result_list,
-                   key=lambda x: x[0])
-        )
-    ) + '\n}'
-    return diff_result
+            diff_result_list.append((key, value1, '-'))
+    for key2, value2 in file2_dict.items():
+        diff_result_list.append((key2, value2, '+'))
+    diff_result = '\n'.join(
+        f'{_fill(tupl[2], size=4)}{tupl[0]}: {tupl[1]}'   # noqa: WPS221
+        for tupl in sorted(diff_result_list, key=lambda x: x[0])
+    )
+    return f'{{\n{diff_result}\n}}'
 
 
 if __name__ == '__main__':
