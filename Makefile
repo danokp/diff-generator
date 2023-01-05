@@ -1,3 +1,6 @@
+install:
+	poetry install
+
 build:
 	poetry build
 
@@ -15,3 +18,11 @@ lint:
 
 test:
 	poetry run pytest
+
+test-coverage:
+	poetry run pytest --cov=hexlet_python_package --cov-report xml
+
+selfcheck:
+	poetry check
+
+check: selfcheck test lint
