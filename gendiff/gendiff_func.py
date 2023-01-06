@@ -1,6 +1,8 @@
 """Functions fot files comparison."""
 import json
 
+import yaml
+
 
 def _fill(name: str, size: int, filler: str = ' ') -> str:
     """Convert string into string of the needed length.
@@ -17,6 +19,23 @@ def _fill(name: str, size: int, filler: str = ' ') -> str:
     return name.rjust(size - 1, filler).ljust(size, filler)
 
 
+def convert_file_into_dict(file_path):
+    """Convert file (json or yaml) into dictionary.
+
+    Args:
+        file_path: The path to a file.
+
+    Returns:
+        The dictionary.
+    """
+    extension = file_path.split('.')[-1]
+    with open(file_path) as import_file:
+        if extension == 'json':
+            return json.load(import_file)
+        elif extension in ['yaml', 'yml']:
+            return yaml.safe_load(import_file)
+
+
 def generate_diff(import_file1: str, import_file2: str) -> str:
     """Compare two json-files and return the result of comparison.
 
@@ -27,10 +46,8 @@ def generate_diff(import_file1: str, import_file2: str) -> str:
     Returns:
         The result of comparison.
     """
-    with open(import_file1) as file1:
-        file1_dict = json.load(file1)
-    with open(import_file2) as file2:
-        file2_dict = json.load(file2)
+    file1_dict = convert_file_into_dict(import_file1)
+    file2_dict = convert_file_into_dict(import_file2)
     diff_result_list = []
     for key, value1 in file1_dict.items():
         if key in file2_dict:
@@ -48,4 +65,4 @@ def generate_diff(import_file1: str, import_file2: str) -> str:
         f'{_fill(tupl[2], size=4)}{tupl[0]}: {tupl[1]}'   # noqa: WPS221
         for tupl in sorted(diff_result_list, key=lambda x: x[0])
     )
-    return f'{{\n{diff_result}\n}}'
+    return '\n'.join(('{', diff_result, '}'))
