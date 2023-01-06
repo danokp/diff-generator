@@ -32,7 +32,7 @@ def convert_file_into_dict(file_path):
     with open(file_path) as import_file:
         if extension == 'json':
             return json.load(import_file)
-        elif extension in ['yaml', 'yml']:
+        elif extension in {'yaml', 'yml'}:
             return yaml.safe_load(import_file)
 
 
