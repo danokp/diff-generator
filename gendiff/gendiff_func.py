@@ -142,7 +142,7 @@ def update_dict(dict1: dict, dict2: dict):
             dict1[key2] = value2
 
 
-def generate_diff_list(file1_dict: dict, file2_dict: dict) -> list:
+def generate_diff_dict(file1_dict: dict, file2_dict: dict) -> dict:
     """Compare two json-files and return the result of comparison.
 
     Args:
@@ -154,11 +154,16 @@ def generate_diff_list(file1_dict: dict, file2_dict: dict) -> list:
     """
     result = defaultdict(dict)
 
-    def walk_first_dct(result_dict1: dict, file1_dict: dict, file2_dict: dict, lvl: int = 0):
+    def walk_dct(
+        result_dict: dict,
+        file1_dict: dict,
+        file2_dict: dict,
+        lvl: int = 0,
+    ) -> dict:
         """Walk through the first dictionary and return differences with the second one.
 
         Args:
-            result_dict1: A dictionary with differences.
+            result_dict: A dictionary with differences.
             file1_dict: The first dictionary to compare.
             file2_dict: The second dictionary to compare.
             lvl: Depth of comparison.
@@ -166,89 +171,69 @@ def generate_diff_list(file1_dict: dict, file2_dict: dict) -> list:
         Returns:
             The difference dictionary without unique items from the second one.
         """
-        for key1, value1 in file1_dict.items():
-            if isinstance(value1, dict):
-                if key1 in file2_dict:
+        keys_set = set()
+        if isinstance(file1_dict, dict):
+            keys_set.update(file1_dict.keys())
+        if isinstance(file2_dict, dict):
+            keys_set.update(file2_dict.keys())
+        for key in keys_set:
+            if key not in file2_dict:
+                value1 = file1_dict[key]
+                sign = (
+                    SIGN_VALUE_IN_FILE1_FILE2 if lvl > 0
+                    else SIGN_VALUE_ONLY_IN_FILE1
+                )
+                result_dict[key][sign] = (
+                    walk_dct(
+                        defaultdict(dict),
+                        value1,
+                        file2_dict.get(key, {}),
+                        lvl=lvl + 1,
+                    ) if isinstance(value1, dict)
+                    else value1
+                )
+            elif key not in file1_dict:
+                value2 = file2_dict[key]
+                sign = (
+                    SIGN_VALUE_IN_FILE1_FILE2 if lvl > 0
+                    else SIGN_VALUE_ONLY_IN_FILE2
+                )
+                result_dict[key][sign] = (
+                    walk_dct(
+                        defaultdict(dict),
+                        file1_dict.get(key, {}),
+                        value2,
+                        lvl=lvl + 1,
+                    ) if isinstance(value2, dict)
+                    else value2
+                )
+            else:
+                value1 = file1_dict[key]
+                value2 = file2_dict[key]
+                if isinstance(value1, dict):
                     sign, lvl = (
                         (SIGN_VALUE_IN_FILE1_FILE2, lvl)
-                        if isinstance(file2_dict[key1], dict)
+                        if isinstance(file2_dict[key], dict)
                         else (SIGN_VALUE_ONLY_IN_FILE1, lvl + 1)
                     )
-                    result_dict1[key1][sign] = (
-                        walk_first_dct(
+                    result_dict[key][sign] = (
+                        walk_dct(
                             defaultdict(dict),
-                            value1,
-                            file2_dict.get(key1, {}),
+                            file1_dict.get(key, {}),
+                            file2_dict.get(key, {}),
                             lvl,
                         )
                     )
+                    if not isinstance(file2_dict[key], dict):
+                        result_dict[key][SIGN_VALUE_ONLY_IN_FILE2] = value2
                 else:
-                    sign = (
-                        SIGN_VALUE_IN_FILE1_FILE2 if lvl > 0
-                        else SIGN_VALUE_ONLY_IN_FILE1
-                    )
-                    result_dict1[key1][sign] = walk_first_dct(
-                        defaultdict(dict),
-                        value1,
-                        file2_dict.get(key1, {}),
-                        lvl=lvl + 1,
-                    )
-            else:
-                if key1 in file2_dict:
-                    value2pop = file2_dict.pop(key1)
-                    if value1 == value2pop:
-                        result_dict1[key1][SIGN_VALUE_IN_FILE1_FILE2] = value1
+                    if value1 == value2:
+                        result_dict[key][SIGN_VALUE_IN_FILE1_FILE2] = value1
                     else:
-                        result_dict1[key1][SIGN_VALUE_ONLY_IN_FILE1] = value1
-                        result_dict1[key1][SIGN_VALUE_ONLY_IN_FILE2] = value2pop
-                else:
-                    sign = (
-                        SIGN_VALUE_IN_FILE1_FILE2 if lvl > 0
-                        else SIGN_VALUE_ONLY_IN_FILE1
-                    )
-                    result_dict1[key1][sign] = value1
-        return result_dict1
-
-    def walk_second_dct(result_dict2, file2_dict_unique, lvl=0):
-        """Walk through the second dictionary and adds unique its items.
-
-        Args:
-            result_dict2: A dictionary with differences.
-            file2_dict_unique: The second dictionary to compare
-            without repeated keys.
-            lvl: Depth of comparison.
-
-        Returns:
-            All difference dictionary between the first and
-            the second dictionary.
-        """
-        for key2, value2 in file2_dict_unique.items():
-            if value2 == {}:
-                continue
-            sign = (
-                SIGN_VALUE_IN_FILE1_FILE2 if lvl > 0
-                else SIGN_VALUE_ONLY_IN_FILE2
-            )
-            if isinstance(value2, dict):
-                if key2 in result_dict2:
-                    update_dict(
-                        result_dict2[key2][SIGN_VALUE_IN_FILE1_FILE2],
-                        walk_second_dct(
-                            result_dict2[key2][SIGN_VALUE_IN_FILE1_FILE2],
-                            value2,
-                            lvl=lvl,
-                        ),
-                    )
-                else:
-                    result_dict2[key2][sign] = walk_second_dct(
-                        defaultdict(dict), value2, lvl=lvl + 1,
-                    )
-            else:
-                result_dict2[key2][sign] = value2
-        return result_dict2
-    return walk_second_dct(
-        walk_first_dct(result, file1_dict, file2_dict), file2_dict,
-    )
+                        result_dict[key][SIGN_VALUE_ONLY_IN_FILE1] = value1
+                        result_dict[key][SIGN_VALUE_ONLY_IN_FILE2] = value2
+        return result_dict
+    return walk_dct(result, file1_dict, file2_dict)
 
 
 def generate_diff(file1_path: str, file2_path: str) -> str:
@@ -261,7 +246,7 @@ def generate_diff(file1_path: str, file2_path: str) -> str:
     Returns:
         Comparison result string.
     """
-    return stylish(generate_diff_list(
+    return stylish(generate_diff_dict(
         convert_file_into_dict(file1_path),
         convert_file_into_dict(file2_path),
     ))
