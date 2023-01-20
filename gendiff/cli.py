@@ -21,5 +21,7 @@ def parse_args():
         '-f',
         '--format',
         help='set format of output',
+        choices=['stylish', 'plain'],
+        default='stylish',
     )
     return parser.parse_args()

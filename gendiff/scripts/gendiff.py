@@ -8,6 +8,7 @@ def main():
     return generate_diff(
         inputs.first_file,
         inputs.second_file,
+        inputs.format,
     )
 
 
