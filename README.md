@@ -6,8 +6,8 @@
 [![wemake-python-styleguide](https://img.shields.io/badge/style-wemake-000000.svg)](https://github.com/wemake-services/wemake-python-styleguide)
 
 ### Examples:
-#### Plain files comparison (JSON)
-[![asciicast](https://asciinema.org/a/E7CDNfRyd6xHhkIKSlOPLKWoK.svg)](https://asciinema.org/a/E7CDNfRyd6xHhkIKSlOPLKWoK)
+#### Stylish format
+[![asciicast](https://asciinema.org/a/vjfhuzWwPIVhlXIr8N4LyZuOP.svg)](https://asciinema.org/a/vjfhuzWwPIVhlXIr8N4LyZuOP)
 
-#### Plain files comparison (YAML)
-[![asciicast](https://asciinema.org/a/Mpz4qTxf5C07e9ZFeXhlzfBbf.svg)](https://asciinema.org/a/Mpz4qTxf5C07e9ZFeXhlzfBbf)
+#### Plain format
+[![asciicast](https://asciinema.org/a/wcoGQfzPiOd4zdMjsXIgoKlNb.svg)](https://asciinema.org/a/wcoGQfzPiOd4zdMjsXIgoKlNb)
