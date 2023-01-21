@@ -1,5 +1,6 @@
 """Compare two files and return difference in needed format."""
 from gendiff.data_coparison import generate_diff_dict
+from gendiff.format_output.json import json
 from gendiff.format_output.plain import plain
 from gendiff.format_output.stylish import stylish
 from gendiff.parse import convert_file_into_dict
@@ -23,6 +24,7 @@ def generate_diff(
     format_dict = {
         'stylish': stylish,
         'plain': plain,
+        'json': json,
     }
     diff_dict = generate_diff_dict(
         convert_file_into_dict(file1_path),
