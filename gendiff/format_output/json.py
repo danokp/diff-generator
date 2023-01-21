@@ -1,3 +1,4 @@
+"""Convert comparison dictionary in JSON style."""
 import json as js
 
 
