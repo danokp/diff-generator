@@ -30,8 +30,7 @@ answer_json_file1_file2_rec = 'answer_json_file1_file2_rec.txt'
 answer_file1_file2 = 'answer_json_file1_file2.txt'
 answer_empty = 'answer_empty.txt'
 
-print(make_path_to_file(yaml_file2_rec))
-print(make_path_to_file(answer_stylish_file1_file2_rec))
+
 @pytest.mark.parametrize('first_file, second_file, answer, format',[
     (empty_file, empty_file, answer_empty, 'stylish'),
     (yaml_file1, yaml_file2, answer_file1_file2, 'stylish'),

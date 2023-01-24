@@ -18,15 +18,15 @@ def convert_values_in_right_style(value_convert) -> str:
         The converted value from convert_dict. If it isn't exist, returns value.
     """
     convert_dct = {
-        True: 'true',
-        False: 'false',
-        None: 'null',
+        'True': 'true',
+        'False': 'false',
+        'None': 'null',
     }
     if isinstance(value_convert, str):
         return f"'{value_convert}'"
     elif isinstance(value_convert, dict):
         return '[complex value]'
-    return convert_dct.get(value_convert, value_convert)
+    return convert_dct.get(str(value_convert), value_convert)
 
 
 def make_one_diff_line(key_list: list, value, meta: str) -> str:
