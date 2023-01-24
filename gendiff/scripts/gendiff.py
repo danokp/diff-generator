@@ -10,7 +10,7 @@ def main():
             inputs.first_file,
             inputs.second_file,
             inputs.format,
-        )
+        ),
     )
 
 

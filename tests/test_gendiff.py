@@ -31,7 +31,7 @@ answer_file1_file2 = 'answer_json_file1_file2.txt'
 answer_empty = 'answer_empty.txt'
 
 
-@pytest.mark.parametrize('first_file, second_file, answer, format',[
+@pytest.mark.parametrize('first_file, second_file, answer, format', [
     (empty_file, empty_file, answer_empty, 'stylish'),
     (yaml_file1, yaml_file2, answer_file1_file2, 'stylish'),
     (json_file1, json_file2, answer_file1_file2, 'stylish'),
@@ -48,7 +48,7 @@ def test_gendiff(first_file, second_file, answer, format):
     ) == write_answer_from_file(make_path_to_file(answer))
 
 
-@pytest.mark.parametrize('first_file, second_file, answer',[
+@pytest.mark.parametrize('first_file, second_file, answer', [
     (empty_file, empty_file, answer_empty),
     (yaml_file1, yaml_file2, answer_file1_file2),
     (json_file1, json_file2, answer_file1_file2),
@@ -61,7 +61,7 @@ def test_gendiff_no_format(first_file, second_file, answer):
     ) == write_answer_from_file(make_path_to_file(answer))
 
 
-@pytest.mark.parametrize('first_file, second_file, answer, format',[
+@pytest.mark.parametrize('first_file, second_file, answer, format', [
     (yaml_file1_rec, yaml_file2_rec, answer_stylish_file1_file2_rec, 'stylis'),
     (yaml_file1_rec, yaml_file2_rec, answer_plain_file1_file2_rec, 'plai'),
     (yaml_file1_rec, yaml_file2_rec, answer_json_file1_file2_rec, 'jsoN'),
@@ -69,7 +69,7 @@ def test_gendiff_no_format(first_file, second_file, answer):
 def test_gendiff_exception(first_file, second_file, answer, format):
     with pytest.raises(Exception):
         generate_diff(
-            make_path_to_file(first_file), 
-            make_path_to_file(second_file), 
+            make_path_to_file(first_file),
+            make_path_to_file(second_file),
             format
         )
