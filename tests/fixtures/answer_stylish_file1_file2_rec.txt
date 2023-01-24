@@ -12,7 +12,7 @@
         setting6: {
             doge: {
               - key1: 0
-              - wow:
+              - wow: 
               + wow: so much
             }
             key: value

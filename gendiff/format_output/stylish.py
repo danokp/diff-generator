@@ -64,8 +64,7 @@ def make_one_diff_line(
         f'{lvl * indent_size * filler}'
         f'{_fill(diff_meaning_dict[meta], size=indent_size)}'
         f'{key}'
-        f'{":" if value == "" else ": "}'
-        f'{value}'
+        f': {value}'
     )
 
 
