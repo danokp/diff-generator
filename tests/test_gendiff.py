@@ -1,4 +1,5 @@
 from gendiff.generate_diff import generate_diff
+from gendiff.scripts.gendiff import main as gendiff
 import os
 import pytest
 
@@ -37,6 +38,7 @@ answer_empty = 'answer_empty.txt'
     (json_file1, json_file2, answer_file1_file2, 'stylish'),
     (yaml_file1_rec, yaml_file2_rec, answer_stylish_file1_file2_rec, 'stylish'),
     (json_file1_rec, json_file2_rec, answer_stylish_file1_file2_rec, 'stylish'),
+    (yaml_file1_rec, json_file2_rec, answer_stylish_file1_file2_rec, 'stylish'),
     (yaml_file1_rec, yaml_file2_rec, answer_plain_file1_file2_rec, 'plain'),
     (json_file1_rec, json_file2_rec, answer_plain_file1_file2_rec, 'plain'),
     (json_file1_rec, json_file2_rec, answer_json_file1_file2_rec, 'json'),
