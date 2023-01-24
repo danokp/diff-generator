@@ -9,7 +9,7 @@ from gendiff.parse import convert_file_into_dict
 def generate_diff(
     file1_path: str,
     file2_path: str,
-    diff_format: str = 'stylish',
+    diff_format: str,
 ) -> str:
     """Generate difference between file1 and file2.
 
