@@ -1,5 +1,5 @@
 """Convert comparison dictionary in tree-shaped style."""
-from gendiff.data_coparison import (
+from gendiff.data_comparison import (
     VALUE_ADDED,
     VALUE_CHANGED,
     VALUE_REMOVED,

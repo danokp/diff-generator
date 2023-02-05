@@ -1,5 +1,5 @@
 """Compare two files and return difference in needed format."""
-from gendiff.data_coparison import generate_diff_dict
+from gendiff.data_comparison import generate_diff_dict
 from gendiff.format_output.json import json
 from gendiff.format_output.plain import plain
 from gendiff.format_output.stylish import stylish
@@ -9,7 +9,7 @@ from gendiff.parse import convert_file_into_dict
 def generate_diff(
     file1_path: str,
     file2_path: str,
-    diff_format: str = 'stylish',
+    diff_format: str,
 ) -> str:
     """Generate difference between file1 and file2.
 
@@ -20,6 +20,9 @@ def generate_diff(
 
     Returns:
         Comparison result string.
+
+    Raises:
+        ValueError: If 'diff_format' not in {'stylish', 'plain', 'json'}
     """
     format_dict = {
         'stylish': stylish,
@@ -31,4 +34,11 @@ def generate_diff(
         convert_file_into_dict(file2_path),
         {},
     )
-    return format_dict[diff_format](diff_dict)
+    formatter = format_dict.get(diff_format)
+    print(formatter)
+    if formatter is None:
+        raise ValueError(
+            f'Choose one of the available formats: '
+            f'{list(format_dict.keys())}.',
+        )
+    return formatter(diff_dict)

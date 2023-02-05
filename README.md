@@ -14,7 +14,7 @@
 ```sh
     source ~/<name of virtual environment>/bin/activate
 ```
-3. Install brain_games package:
+3. Install gendiff package:
 ```sh
     python3 -m pip install gendiff
 ```

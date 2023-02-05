@@ -1,4 +1,17 @@
-"""Compare two dictionaries and return comparison result."""
+"""Compare two dictionaries and return comparison result.
+
+Comparison format:
+{key_lvl1: [value_lvl1, comparison_result], ...}
+
+comparison_result in ['added', 'removed', 'changed', 'unchanged']
+
+if comparison_result == 'unchanged':
+    value_lvl1 = {key_lvl2: value_lvl2, ...}
+elif isinstance(value_lvl1, dict):
+    {key_lvl2: [value_lvl2, comparison_result], ...}
+else:
+    value_lvl2
+"""
 DIFF_POS = 0
 VALUE_POZ = 1
 VALUE_UNCHANGED = 'unchanged'
