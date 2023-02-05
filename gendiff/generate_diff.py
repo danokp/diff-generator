@@ -35,7 +35,6 @@ def generate_diff(
         {},
     )
     formatter = format_dict.get(diff_format)
-    print(formatter)
     if formatter is None:
         raise ValueError(
             f'Choose one of the available formats: '
