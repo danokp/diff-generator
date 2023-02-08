@@ -6,7 +6,7 @@ from gendiff.cli import parse_args
 from tests.test_gendiff import test_formats, test_files # noqa F401
 
 
-def test_parse_args(test_formats, test_files):
+def test_parse_args(test_formats, test_files): # noqa F811
     first_file, second_file = test_files
     format = test_formats[0]
     sys.argv = [
