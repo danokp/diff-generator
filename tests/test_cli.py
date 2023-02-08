@@ -3,7 +3,7 @@ import sys
 
 
 from gendiff.cli import parse_args
-from tests.test_gendiff import test_formats, test_files
+from tests.test_gendiff import test_formats, test_files # noqa F401
 
 
 def test_parse_args(test_formats, test_files):
@@ -12,9 +12,9 @@ def test_parse_args(test_formats, test_files):
     sys.argv = [
         'gendiff',
         first_file,
-        second_file, 
+        second_file,
         '-f',
-        format
+        format,
     ]
     args = parse_args()
     assert args.first_file == first_file
