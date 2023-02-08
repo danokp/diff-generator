@@ -120,32 +120,32 @@ def stylish(diff_dict: dict) -> str:
                         filler,
                     ),
                 )
-            else:
-                if metadate == VALUE_CHANGED:
-                    for meta, i in zip((VALUE_REMOVED, VALUE_ADDED), (0, 1)):
-                        diff_result.append(
-                            make_one_diff_line(
-                                key,
-                                meta,
-                                inner(value[i], lvl=lvl + 1)
-                                if isinstance(value[i], dict)
-                                else convert_values_in_right_style(value[i]),
-                                lvl,
-                                indent_size,
-                                filler,
-                            ),
-                        )
-                else:
+                continue
+            if metadate == VALUE_CHANGED:
+                for meta, i in zip((VALUE_REMOVED, VALUE_ADDED), (0, 1)):
                     diff_result.append(
                         make_one_diff_line(
                             key,
-                            metadate,
-                            convert_values_in_right_style(value),
+                            meta,
+                            inner(value[i], lvl=lvl + 1)
+                            if isinstance(value[i], dict)
+                            else convert_values_in_right_style(value[i]),
                             lvl,
                             indent_size,
                             filler,
                         ),
                     )
+                continue
+            diff_result.append(
+                make_one_diff_line(
+                    key,
+                    metadate,
+                    convert_values_in_right_style(value),
+                    lvl,
+                    indent_size,
+                    filler,
+                ),
+            )
         diff_result.append(f'{lvl * indent_size * filler}}}')
         return '\n'.join(diff_result)
     if diff_dict == {}:
