@@ -17,16 +17,17 @@ def convert_values_in_right_style(value_convert) -> str:
     Returns:
         The converted value from convert_dict. If it isn't exist, returns value.
     """
-    convert_dct = {
-        'True': 'true',
-        'False': 'false',
-        'None': 'null',
-    }
     if isinstance(value_convert, str):
         return f"'{value_convert}'"
-    elif isinstance(value_convert, dict):
+    if isinstance(value_convert, dict):
         return '[complex value]'
-    return convert_dct.get(str(value_convert), value_convert)
+    if value_convert is False:
+        return 'false'
+    if value_convert is True:
+        return 'true'
+    if value_convert is None:
+        return 'null'
+    return value_convert
 
 
 def make_one_diff_line(key_list: list, value, meta: str) -> str:
@@ -37,13 +38,13 @@ def make_one_diff_line(key_list: list, value, meta: str) -> str:
             f'updated. From {convert_values_in_right_style(value[0])} '
             f'to {convert_values_in_right_style(value[1])}'
         )
-    elif meta == VALUE_ADDED:
+    if meta == VALUE_ADDED:
         return (
             f'{diff_line}'
             f'added with value: '
             f'{convert_values_in_right_style(value)}'
         )
-    elif meta == VALUE_REMOVED:
+    if meta == VALUE_REMOVED:
         return f'{diff_line}removed'
 
 

@@ -31,12 +31,13 @@ def convert_values_in_right_style(value_convert) -> str:
     Returns:
         The converted value from convert_dict. If it isn't exist, returns value.
     """
-    convert_dct = {
-        'True': 'true',
-        'False': 'false',
-        'None': 'null',
-    }
-    return convert_dct.get(str(value_convert), value_convert)
+    if value_convert is False:
+        return 'false'
+    if value_convert is True:
+        return 'true'
+    if value_convert is None:
+        return 'null'
+    return value_convert
 
 
 def make_one_diff_line(

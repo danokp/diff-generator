@@ -40,24 +40,20 @@ def generate_diff_dict(
     for key in keys_set:
         if key not in file2_dict:
             result_dict[key] = [file1_dict[key], VALUE_REMOVED]
-        elif key not in file1_dict:
+            continue
+        if key not in file1_dict:
             result_dict[key] = [file2_dict[key], VALUE_ADDED]
-        else:
-            value1 = file1_dict[key]
-            value2 = file2_dict[key]
-            if value1 == value2:
-                result_dict[key] = [value1, VALUE_UNCHANGED]
-            elif isinstance(value1, dict):
-                result_dict[key] = [
-                    generate_diff_dict(
-                        file1_dict.get(key, {}),
-                        file2_dict.get(key, {}),
-                        {},
-                    ) if isinstance(value2, dict)
-                    else [value1, value2],
-                    VALUE_UNCHANGED if isinstance(value2, dict)
-                    else VALUE_CHANGED,
-                ]
-            else:
-                result_dict[key] = [[value1, value2], VALUE_CHANGED]
+            continue
+        value1 = file1_dict[key]
+        value2 = file2_dict[key]
+        if isinstance(value1, dict) and isinstance(value2, dict):
+            result_dict[key] = [
+                generate_diff_dict(value1, value2, {}),
+                VALUE_UNCHANGED,
+            ]
+            continue
+        if value1 == value2:
+            result_dict[key] = [value1, VALUE_UNCHANGED]
+            continue
+        result_dict[key] = [[value1, value2], VALUE_CHANGED]
     return result_dict
