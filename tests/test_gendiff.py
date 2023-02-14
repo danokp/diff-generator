@@ -2,7 +2,7 @@ import os
 import pytest
 
 
-from gendiff.generate_diff import generate_diff
+from gendiff.diff_generator import generate_diff
 
 
 DIR_PATH = os.path.join(os.path.dirname(__file__), 'fixtures')

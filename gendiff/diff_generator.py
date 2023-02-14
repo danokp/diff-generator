@@ -3,7 +3,7 @@ from gendiff.data_comparison import generate_diff_dict
 from gendiff.format_output.json import json
 from gendiff.format_output.plain import plain
 from gendiff.format_output.stylish import stylish
-from gendiff.parse import convert_file_into_dict
+from gendiff.parser import convert_file_into_dict
 
 
 def generate_diff(

@@ -1,6 +1,6 @@
 """Compares two files."""
 from gendiff.cli import parse_args
-from gendiff.generate_diff import generate_diff
+from gendiff.diff_generator import generate_diff
 
 
 def main():
