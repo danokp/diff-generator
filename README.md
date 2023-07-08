@@ -1,4 +1,4 @@
-### Hexlet tests and linter status:
+# Difference generator
 [![Actions Status](https://github.com/danokp/python-project-50/workflows/hexlet-check/badge.svg)](https://github.com/danokp/python-project-50/actions)
 [![Github Actions Status](https://github.com/danokp/python-project-50/workflows/Python%20CI/badge.svg)](https://github.com/danokp/python-project-50/actions)
 [![Maintainability](https://api.codeclimate.com/v1/badges/bb9cddcc96361d90f2a0/maintainability)](https://codeclimate.com/github/danokp/python-project-50/maintainability)
@@ -6,19 +6,24 @@
 [![wemake-python-styleguide](https://img.shields.io/badge/style-wemake-000000.svg)](https://github.com/wemake-services/wemake-python-styleguide)
 
 ### Installation guide:
-1. Create virtual environment:
+1. Download project:
+```sh
+    git clone git@github.com:danokp/diff-generator.git
+    cd diff-generator
+```
+3. Create virtual environment:
 ```sh
     python3 -m venv <name of virtual environment>
 ```
-2. Activate virtual environment:
+3. Activate virtual environment:
 ```sh
     source ~/<name of virtual environment>/bin/activate
 ```
-3. Install gendiff package:
+4. Install gendiff package:
 ```sh
     python3 -m pip install gendiff
 ```
-4. Use one of the following formats to compare two *.yaml, *yml or *.json files:
+5. Use one of the following formats to compare two *.yaml, *yml or *.json files:
 
 	–  stylish (as a default)
 
